@@ -1,29 +1,20 @@
+// apigateway/src/app.module.ts
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-
-// import { UserModule } from './user/user.module';
-// import { InventoryModule } from './inventory/inventory.module';
-// import { PaymentModule } from './payment/payment.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { UserService } from './user/user.service';
+import { UserResolver } from './user/user.resolver';
+import { InventoryModule } from './msInventory/Inventory.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    // Cliente gRPC para msUsers
     ClientsModule.register([
-      // {
-      //   name: 'USER_PACKAGE',
-      //   transport: Transport.GRPC,
-      //   options: {
-      //     package: 'user',
-      //     protoPath: join(__dirname, '../proto/user.proto'),
-      //     url: 'localhost:50051',
-      //   },
-      // },
-      // Cliente RabbitMQ para msInventory
       {
         name: 'INVENTORY_SERVICE',
         transport: Transport.RMQ,
@@ -32,22 +23,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           queue: 'api_to_inventory_queue',
           queueOptions: { durable: false },
         },
-      },
-      // // Cliente RabbitMQ para msPayments
-      // {
-      //   name: 'PAYMENT_SERVICE',
-      //   transport: Transport.RMQ,
-      //   options: {
-      //     urls: ['amqp://localhost:5672'],
-      //     queue: 'payment_queue',
-      //     queueOptions: { durable: false },
-      //   },
-      // },
-    ]),
-    // UserModule,
-    // InventoryModule,
-    // PaymentModule,
+      }]),
+    InventoryModule, // Importa el módulo aquí
   ],
-  exports: ['INVENTORY_SERVICE'],
+  providers: [UserResolver, UserService],
+  // No necesitas exportar 'INVENTORY_SERVICE' desde AppModule si lo exportas desde InventoryModule
+  // exports: ['INVENTORY_SERVICE'],
 })
 export class AppModule {}
