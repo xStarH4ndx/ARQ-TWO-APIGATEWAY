@@ -1,23 +1,15 @@
 // apigateway/src/inventory/inventory.module.ts
 import { Module } from '@nestjs/common';
 import { InventoryService } from './Inventory.service';
-import { InventoryController } from './Inventory.controller';
+import { InventoryResolver } from './Inventory.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { RmqModule } from 'src/rmq/rmq.module';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'INVENTORY_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://localhost:5672'],
-        },
-      },
-    ]),
+    RmqModule.register('msinventory.queue'),
   ],
-  controllers: [InventoryController],
-  providers: [InventoryService],
+  providers: [InventoryService, InventoryResolver],
   exports: [InventoryService], // Asegúrate de exportar el InventoryService
 })
 export class InventoryModule {}
