@@ -1,8 +1,7 @@
 // apigateway/src/inventory/inventory.module.ts
 import { Module } from '@nestjs/common';
-import { InventoryService } from './Inventory.service';
-import { InventoryResolver } from './Inventory.resolver';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { InventoryService } from '../services/Inventory.service';
+import { InventoryResolver } from '../resolver/Inventory.resolver';
 import { RmqModule } from 'src/rmq/rmq.module';
 
 @Module({

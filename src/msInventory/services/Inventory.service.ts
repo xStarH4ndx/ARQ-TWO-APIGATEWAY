@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Producto } from './models/producto.model';
-import { CrearProductoInputDto } from './dto/crearProductoInputDto';
-import { RABBITMQ_SERVICE } from '../rmq/rmq.config';
+import { Producto } from '../models/producto.model';
+import { CrearProductoInputDto } from '../dto/crearProductoInputDto';
+import { RABBITMQ_SERVICE } from '../../rmq/rmq.config';
 
 @Injectable()
 export class InventoryService {
@@ -18,11 +18,11 @@ export class InventoryService {
     };
 
     // Enviamos el producto al microservicio con el patrón correcto
-    return this.inventoryClient.emit('inventory.create', producto).toPromise();
+    return this.inventoryClient.emit('producto.create', producto).toPromise();
   }
 
   async obtenerProducto(id: string) {
-    return this.inventoryClient.send('inventory.get', id).toPromise();
+    return this.inventoryClient.send('producto.get', id).toPromise();
   }
 
   // ... otros métodos

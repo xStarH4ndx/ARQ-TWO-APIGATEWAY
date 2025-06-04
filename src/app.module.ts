@@ -1,13 +1,9 @@
-// apigateway/src/app.module.ts
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-// import { UserService } from './user/user.service';
-// import { UserResolver } from './user/user.resolver';
-import { InventoryModule } from './msInventory/Inventory.module';
+import { InventoryModule } from './msInventory/modules/Inventory.module';
 import { AppResolver } from './app.resolver';
+import { CompraModule } from './msInventory/modules/compra.module';
 
 @Module({
   imports: [
@@ -17,6 +13,7 @@ import { AppResolver } from './app.resolver';
       // autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     InventoryModule, // Importa el módulo aquí
+    CompraModule
   ],
   providers: [AppResolver],
 })

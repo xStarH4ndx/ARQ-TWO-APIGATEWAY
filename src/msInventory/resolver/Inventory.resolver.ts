@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { InventoryService } from './Inventory.service';
-import { Producto } from './models/producto.model';
-import { CrearProductoInputDto } from './dto/crearProductoInputDto';
+import { InventoryService } from '../services/Inventory.service';
+import { Producto } from '../models/producto.model';
+import { CrearProductoInputDto } from '../dto/crearProductoInputDto';
 
 @Resolver(() => Producto)
 export class InventoryResolver {
