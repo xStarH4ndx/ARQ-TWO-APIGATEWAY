@@ -7,13 +7,20 @@ import { CrearProductoInputDto } from '../dto/crearProductoInputDto';
 export class InventoryResolver {
   constructor(private readonly inventoryService: InventoryService) {}
 
-  @Mutation(() => Producto)
-  async crearProducto(@Args('input') input: CrearProductoInputDto): Promise<Producto> {
-    return this.inventoryService.crearProducto(input);
+  @Mutation(() => String)
+  async crearProducto(@Args('input') input: CrearProductoInputDto): Promise<string> {
+    await this.inventoryService.crearProducto(input);
+    return 'Producto enviado correctamente.';
   }
 
   @Query(() => Producto, { name: 'obtenerProducto' })
   async obtenerProducto(@Args('id') id: string): Promise<Producto> {
     return this.inventoryService.obtenerProducto(id);
   }
+
+  @Query(() => String)
+  saludar(@Args('nombre') nombre: string) {
+    return this.inventoryService.saludar(nombre);
+  }
+
 }

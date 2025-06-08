@@ -1,10 +1,23 @@
+// apigateway/src/inventory/inventory.module.ts
 import { Module } from '@nestjs/common';
-import { CompraResolver } from '../resolver/Compra.resolver';
-import { RmqModule } from 'src/rmq/rmq.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CompraService } from '../services/Compra.service';
+import { CompraResolver } from '../resolver/Compra.resolver';
 
 @Module({
-  imports: [RmqModule.register('msinventory.queue')],
-  providers: [CompraResolver, CompraService],
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'RABBITMQ_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          exchange: 'apigateway.exchange', // solo exchange, sin queue
+        },
+      },
+    ]),
+  ],
+  providers: [CompraService, CompraResolver],
+  exports: [CompraService],
 })
 export class CompraModule {}
