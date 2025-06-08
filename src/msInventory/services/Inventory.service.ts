@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CrearProductoInputDto } from '../dto/crearProductoInputDto';
+import { Producto } from '../models/producto.model';
 
 @Injectable()
 export class InventoryService {
@@ -20,9 +21,16 @@ export class InventoryService {
       .toPromise();
   }
 
-  saludar(nombre: string) {
+  listarProductos(): Promise<Producto[]> {
     return this.inventoryClient
-      .send('msinventory.queue', { action: 'saludar', body: nombre })
+      .send('msinventory.queue', { action: 'listarProductos', body: {}})
       .toPromise();
   }
+
+  eliminarProducto(id: string) {
+    return this.inventoryClient
+      .send('msinventory.queue', { action: 'eliminarProducto', body: id })
+      .toPromise();
+  }
+
 }

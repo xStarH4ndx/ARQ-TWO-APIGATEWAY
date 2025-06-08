@@ -9,18 +9,23 @@ export class InventoryResolver {
 
   @Mutation(() => String)
   async crearProducto(@Args('input') input: CrearProductoInputDto): Promise<string> {
-    await this.inventoryService.crearProducto(input);
-    return 'Producto enviado correctamente.';
+    const res = await this.inventoryService.crearProducto(input);
+    return 'Producto enviado correctamente: id: '+ res;
   }
 
-  @Query(() => Producto, { name: 'obtenerProducto' })
+  @Mutation(() => String)
+  async eliminarProducto(@Args('id') id: string): Promise<string> {
+    return this.inventoryService.eliminarProducto(id);
+  }
+
+  @Query(() => Producto)
   async obtenerProducto(@Args('id') id: string): Promise<Producto> {
     return this.inventoryService.obtenerProducto(id);
   }
 
-  @Query(() => String)
-  saludar(@Args('nombre') nombre: string) {
-    return this.inventoryService.saludar(nombre);
+  @Query(() => [Producto])
+  async listarProductos(): Promise<Producto[]> {
+    return this.inventoryService.listarProductos();
   }
 
 }
