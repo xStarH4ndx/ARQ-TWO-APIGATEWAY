@@ -29,4 +29,10 @@ export class CompraService {
       .send('msinventory.queue', { action: 'listarInventario', body: id })
       .toPromise();
   }
+
+  actualizarInventario(id: string, cantidad: number) {
+    return this.inventoryClient
+      .send('msinventory.queue', { action: 'actualizarInventario', body: { "id":id, "nuevaCantidadStock":cantidad } })
+      .toPromise();
+  }
 }

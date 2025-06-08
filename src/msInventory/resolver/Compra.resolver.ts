@@ -18,6 +18,11 @@ export class CompraResolver {
     return this.compraService.eliminarCompra(id);
   }
 
+  @Mutation(() => Inventario)
+  async actualizarInventario(@Args('id') id: string, @Args('cantidad') cantidad: number): Promise<Inventario> {
+    return this.compraService.actualizarInventario(id, cantidad);
+  }
+
   @Query(() => [Compra])
   async listarCompras(@Args('casaId') casaId: string): Promise<Compra[]> {
     return this.compraService.listarCompras(casaId);
