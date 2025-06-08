@@ -23,4 +23,10 @@ export class CompraService {
       .send('msinventory.queue', { action: 'eliminarCompra', body: id })
       .toPromise();
   }
+
+  listarInventario(id: string) {
+    return this.inventoryClient
+      .send('msinventory.queue', { action: 'listarInventario', body: id })
+      .toPromise();
+  }
 }

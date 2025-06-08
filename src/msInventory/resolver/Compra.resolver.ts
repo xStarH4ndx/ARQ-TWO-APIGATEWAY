@@ -2,6 +2,7 @@ import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CompraCreacionInput } from '../dto/compraCreacionInput';
 import { CompraService } from '../services/Compra.service';
 import { Compra } from '../models/compra.model';
+import { Inventario } from '../models/itemInventario.model';
 
 @Resolver()
 export class CompraResolver {
@@ -22,7 +23,10 @@ export class CompraResolver {
     return this.compraService.listarCompras(casaId);
   }
 
-
+  @Query(() => [Inventario])
+  async listarInventario(@Args('casaId') casaId: string): Promise<Inventario[]> {
+    return this.compraService.listarInventario(casaId);
+  }
 
 }
 
