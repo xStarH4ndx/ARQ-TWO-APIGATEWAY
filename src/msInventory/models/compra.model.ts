@@ -1,0 +1,17 @@
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ItemCompra } from './itemCompra.model'; // Asegúrate de importar ItemCompra
+
+@ObjectType()
+export class Compra {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  casaId: string;
+
+  @Field(() => Date) 
+  fechaCompra: Date; 
+
+  @Field(() => [ItemCompra])
+  itemsCompra: ItemCompra[];
+}

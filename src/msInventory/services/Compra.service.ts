@@ -4,10 +4,23 @@ import { CompraCreacionInput } from '../dto/compraCreacionInput';
 
 @Injectable()
 export class CompraService {
-  constructor(@Inject("RABBITMQ_SERVICE") private readonly client: ClientProxy) {}
+  constructor(@Inject("INVENTORY_SERVICE") private readonly inventoryClient: ClientProxy) {}
 
-  async crearCompra(compra: CompraCreacionInput): Promise<string> {
-    this.client.emit('compra.create', compra);
-    return 'Compra enviada exitosamente';
+  crearCompra(input: CompraCreacionInput) {
+    return this.inventoryClient
+      .send('msinventory.queue', { action: 'crearCompra', body: input })
+      .toPromise();
+  }
+
+  listarCompras(id: string) {
+    return this.inventoryClient
+      .send('msinventory.queue', { action: 'listarCompras', body: id })
+      .toPromise();
+  }
+
+  eliminarCompra(id: string) {
+    return this.inventoryClient
+      .send('msinventory.queue', { action: 'eliminarCompra', body: id })
+      .toPromise();
   }
 }
