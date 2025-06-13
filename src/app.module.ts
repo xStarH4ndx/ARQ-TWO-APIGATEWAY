@@ -4,16 +4,19 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { InventoryModule } from './msInventory/modules/Inventory.module';
 import { AppResolver } from './app.resolver';
 import { CompraModule } from './msInventory/modules/compra.module';
+import { PaymentModule } from './mspayments/payments.module';
+import { ConfigModule } from '@nestjs/config'; // <--- IMPORTADO
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }), // <--- AÑADIDO
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true, // Genera el esquema automáticamente
-      // autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: true,
     }),
-    InventoryModule, // Importa el módulo aquí
-    CompraModule
+    InventoryModule,
+    CompraModule,
+    PaymentModule,
   ],
   providers: [AppResolver],
 })

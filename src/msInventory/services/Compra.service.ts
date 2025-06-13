@@ -14,7 +14,7 @@ export class CompraService {
 
   listarCompras(id: string) {
     return this.inventoryClient
-      .send('msinventory.queue', { action: 'listarCompras', body: id })
+      .send('msinventory.queue', { action: 'listarCompras', body: {casaId: id} })
       .toPromise();
   }
 
