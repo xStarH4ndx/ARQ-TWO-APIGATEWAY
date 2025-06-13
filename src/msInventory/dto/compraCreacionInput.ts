@@ -10,11 +10,6 @@ export class CompraCreacionInput {
   @IsNotEmpty()
   casaId: string;
 
-  @Field(() => Date)
-  @IsDate()
-  @Type(() => Date)
-  fechaCompra: Date;
-
   @Field(() => [ItemCompraInput])
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
