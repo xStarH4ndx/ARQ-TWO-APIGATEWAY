@@ -13,6 +13,9 @@ export class GastoServicio {
     @Field()
     valorTotal: number;
 
-    @Field(() => Date)
-    fechaRenovacion: Date;
+    @Field()
+    fechaRegistro: string;
+
+    @Field()
+    fechaRenovacion: string;
 }

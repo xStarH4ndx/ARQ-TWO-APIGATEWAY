@@ -9,8 +9,14 @@ export class GastoCompra {
     @Field()
     compraId: string;
 
+    @Field()
+    descripcion: string;
+
     @Field(() => [ItemCompra])
     itemsCompra: ItemCompra[];
+
+    @Field(() => Date)
+    fechaRegistro: Date;
 
     @Field()
     valorTotalCompartido: number;
