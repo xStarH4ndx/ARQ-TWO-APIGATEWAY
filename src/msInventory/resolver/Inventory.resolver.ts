@@ -3,7 +3,7 @@ import { InventoryService } from '../services/Inventory.service';
 import { Producto } from '../models/producto.model';
 import { CrearProductoInputDto } from '../dto/crearProductoInputDto';
 
-@Resolver(() => Producto)
+@Resolver()
 export class InventoryResolver {
   constructor(private readonly inventoryService: InventoryService) {}
 

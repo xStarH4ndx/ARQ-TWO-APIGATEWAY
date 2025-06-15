@@ -9,8 +9,8 @@ export class Compra {
   @Field()
   casaId: string;
 
-  @Field(() => Date) 
-  fechaCompra: Date; 
+  @Field() 
+  fechaCompra: string; 
 
   @Field(() => [ItemCompra])
   itemsCompra: ItemCompra[];
