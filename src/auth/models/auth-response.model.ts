@@ -3,7 +3,7 @@ import { User } from './user.model';
 
 @ObjectType()
 export class AuthResponse {
-  @Field()
+  @Field(() => String)
   token: string;
 
   @Field(() => User)
