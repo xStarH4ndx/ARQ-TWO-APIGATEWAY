@@ -1,6 +1,7 @@
-# --- STAGE 1: Build Stage ---
-# Usamos Node.js 22 basado en la dependencia @types/node en tu package.json
-FROM node:22-alpine AS build
+# Usa una imagen base de Node.js adecuada (ej. LTS)
+# Considera usar node:20-alpine si esa es la versión que estás usando localmente.
+# node:22-alpine es la última LTS, pero si tu proyecto fue desarrollado con 20, mejor usar 20.
+FROM node:22-alpine
 
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
@@ -9,41 +10,25 @@ WORKDIR /app
 # Esto optimiza el uso del caché de Docker
 COPY package*.json ./
 
-# Instalar todas las dependencias (incluyendo devDependencies para la compilación)
+# Instalar TODAS las dependencias (incluyendo devDependencies como @nestjs/cli)
+# Para desarrollo, necesitas las herramientas de desarrollo dentro del contenedor.
 RUN npm install
 
-# Copiar el resto del código fuente de tu proyecto
+# Copiar el resto del código fuente de tu proyecto.
+# En desarrollo, generalmente quieres todo el código fuente.
 COPY . .
-
-# Compilar la aplicación NestJS
-# Esto generará el código JavaScript compilado en la carpeta 'dist'
-RUN npm run build
-
-# --- STAGE 2: Production Stage ---
-# Usar una imagen más ligera para la producción
-FROM node:22-alpine AS production
-
-# Establecer el directorio de trabajo
-WORKDIR /app
-
-# Copiar solo los archivos de dependencias para instalar las de producción
-COPY package*.json ./
-
-# Instalar solo las dependencias de producción (excluyendo las de desarrollo)
-RUN npm install --omit=dev
-
-# Copiar el código compilado desde la etapa de construcción
-# La carpeta 'dist' contiene tu aplicación NestJS compilada
-COPY --from=build /app/dist ./dist
-
-# Copiar el archivo .env desde la etapa de construcción.
-# ¡Recordatorio de seguridad! Para producción, considera usar variables de entorno o secretos de K8s.
-COPY --from=build /app/.env ./.env
 
 # Exponer el puerto que usa tu API Gateway
 # Por defecto, NestJS usa el puerto 3000. Confirma en tu main.ts si es diferente.
 EXPOSE 3000
 
-# Comando para ejecutar la aplicación NestJS en producción
-# El script 'start:prod' de tu package.json es ideal para esto
-CMD ["npm", "run", "start:prod"]
+# Comando para ejecutar la aplicación NestJS en desarrollo.
+# El script 'start:dev' de tu package.json es perfecto para esto,
+# ya que incluye '--watch' para recargar automáticamente si hay cambios
+# (aunque esto no es tan relevante en Kubernetes si no usas volúmenes persistentes para el código).
+CMD ["npm", "run", "start:dev"]
+
+# Notas adicionales para desarrollo:
+# - No necesitas una etapa de 'build' separada porque estás incluyendo devDependencies y el código fuente completo.
+# - El .env se copia directamente si está en tu directorio raíz.
+# - imagePullPolicy en Kubernetes debería ser 'IfNotPresent' o 'Always' si construyes la imagen localmente.
