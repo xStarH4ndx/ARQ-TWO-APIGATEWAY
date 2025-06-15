@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { HousesService } from './houses.service';
+//ESTO NO SE USA PERO MEJOR QUE SOBRE A QUE FALTE
 
 @Controller('houses')
 export class HousesController {
@@ -27,11 +28,9 @@ export class HousesController {
 
   @Post(':houseId/users/:userId')
   async addUserToHouse(
-    @Param('nombre') nombre: string,
-    @Param('userId') userId: string,
     @Param('code') code: string
   ) {
-    return this.housesService.addUserToHouse(nombre, userId, code);
+    return this.housesService.addUserToHouse(code);
   }
 
   @Get(':houseId/code')

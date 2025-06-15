@@ -42,8 +42,8 @@ export class HousesService implements OnModuleInit {
     return this.housesService.findOneHouse(findOneHouseData);
   }
 
-  async addUserToHouse(createHouseData: any, userId: string, code: string) {
-    return this.housesService.addUserToHouse(createHouseData);
+  async addUserToHouse(code: string) {
+    return this.housesService.addUserToHouse(code);
   }
   
   async addUserToHouseById(houseId: string, userId: string) {
