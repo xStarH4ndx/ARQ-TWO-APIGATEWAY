@@ -10,7 +10,7 @@ import { CompraResolver } from '../resolver/Compra.resolver';
         name: 'INVENTORY_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://user:l79kwavQdcz2Fv75@my-rabbitmq:5672'],
           queue: 'msinventory.queue',  // Solo cola directa
           queueOptions: {
             durable: true,
