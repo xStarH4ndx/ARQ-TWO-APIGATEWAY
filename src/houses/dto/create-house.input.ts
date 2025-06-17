@@ -17,5 +17,5 @@ export class CreateHouseInput {
 
   @Field(() => [String])
   @IsNotEmpty()
-  userIds: string[];
+  userIds?: string[];
 }

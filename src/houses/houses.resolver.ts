@@ -17,66 +17,66 @@ export class HousesResolver {
   constructor(private readonly housesService: HousesService) {}
 
   @Mutation(() => House)
-  createHouse(@Args('input') input: CreateHouseInput) {
+  async createHouse(@Args('input') input: CreateHouseInput): Promise<any> {
     return this.housesService.createHouse(input);
   }
 
   @Query(() => HousesResponse)
-  findAllHouses(
+  async findAllHouses(
     @Args('limit', { type: () => Number, nullable: true }) limit?: number,
     @Args('offset', { type: () => Number, nullable: true }) offset?: number,
-  ) {
+  ): Promise<any> {
     return this.housesService.findAllHouses({ limit, offset });
   }
 
   @Query(() => House)
-  findOneHouse(@Args('id', { type: () => ID }) id: string) {
+  async findOneHouse(@Args('id') id: string): Promise<any> {
     return this.housesService.findOneHouse({ id });
   }
 
   @Query(() => House)
-  findHouseByCode(@Args('code') code: string) {
-    return this.housesService.findHouseByCode(code);
+  async findHouseByCode(@Args('code') codigo: string): Promise<any> {
+    return this.housesService.findHouseByCode(codigo);
   }
 
   @Mutation(() => House)
-  updateHouse(@Args('input') input: UpdateHouseInput) {
+  async updateHouse(@Args('input') input: UpdateHouseInput) {
     return this.housesService.updateHouse(input);
   }
 
   @Mutation(() => Boolean)
-  removeHouse(@Args('id', { type: () => ID }) id: string) {
+  async removeHouse(@Args('id') id: string): Promise<any>  {
     return this.housesService.removeHouse(id);
   }
 
   @Mutation(() => House)
-  addUserToHouse(@Args('input') code: string) {
+  async addUserToHouse(@Args('input') code: string) {
     return this.housesService.addUserToHouse(code);
   }
 
   @Mutation(() => House)
-  addUserToHouseById(@Args('input') input: AddUserToHouseInput) {
+  async addUserToHouseById(@Args('input') input: AddUserToHouseInput) {
     return this.housesService.addUserToHouseById(input.houseId, input.userId);
   }
 
 
   @Mutation(() => House)
-  removeUserFromHouse(@Args('input') input: RemoveUserFromHouseInput) {
+  async removeUserFromHouse(@Args('input') input: RemoveUserFromHouseInput) {
     return this.housesService.removeUserFromHouse(input.houseId, input.userId);
   }
 
   @Query(() => GetUsersInHouseResponse)
-  getUsersInHouse(@Args('houseId', { type: () => ID }) houseId: string) {
+  async getUsersInHouse(@Args('houseId', { type: () => ID }) houseId: string) {
     return this.housesService.getUsersInHouse(houseId);
   }
 
   @Query(() => [House])
-  getHousesByUser(@Args('userId', { type: () => ID }) userId: string) {
+  async getHousesByUser(@Args('userId', { type: () => ID }) userId: string) {
     return this.housesService.getHousesByUser(userId);
   }
 
   @Query(() => IsUserInHouseResponse)
-  isUserInHouse(
+  async isUserInHouse(
     @Args('houseId', { type: () => ID }) houseId: string,
     @Args('userId', { type: () => ID }) userId: string,
   ) {
@@ -84,17 +84,17 @@ export class HousesResolver {
   }
 
   @Query(() => HouseExistsResponse)
-  houseExists(@Args('houseId', { type: () => ID }) houseId: string) {
+  async houseExists(@Args('houseId', { type: () => ID }) houseId: string) {
     return this.housesService.houseExists(houseId);
   }
 
   @Query(() => [House])
-  searchHousesByName(@Args('input') name: string) {
+  async searchHousesByName(@Args('input') name: string) {
     return this.housesService.searchHousesByName(name);
   }
 
   @Query(() => GetHouseStatsResponse)
-  getHouseStats() {
+  async getHouseStats() {
     return this.housesService.getHousesStats();
   }
 }

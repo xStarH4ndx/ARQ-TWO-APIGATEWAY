@@ -58,8 +58,8 @@ export class HousesService implements OnModuleInit {
         return this.housesService.removeHouse({ id });
     }  
 
-    async findHouseByCode(code: string) {
-        return this.housesService.findHouseByCode({ code });
+    async findHouseByCode(codigo: string) {
+        return this.housesService.findHouseByCode({ codigo });
     }
 
     async removeUserFromHouse(houseId: string, userId: string) {
