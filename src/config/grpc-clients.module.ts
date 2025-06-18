@@ -15,7 +15,7 @@ import { join } from 'path';
             join(__dirname, '../../proto/users.proto'),
             join(__dirname, '../../proto/auth.proto'),
           ],
-          url: 'localhost:5000',
+          url: '0.0.0.0:5000',
         },
       },
     ]),
