@@ -15,7 +15,7 @@ import { join } from 'path';
             join(__dirname, '../../proto/users.proto'),
             join(__dirname, '../../proto/auth.proto'),
           ],
-          url: '0.0.0.0:5000',
+          url: 'ms-users:5000',
         },
       },
     ]),
