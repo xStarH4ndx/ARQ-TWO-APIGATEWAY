@@ -11,7 +11,7 @@ import { PaymentResolver } from "./payments.resolver";
                 name: 'PAYMENTS_SERVICE',
                 transport: Transport.RMQ,
                 options: {
-                    urls: ['amqp://rabbitmq:5672'],
+                    urls: ['amqps://wfkwwege:MXhjPUXvCp_hdMeVg_16cIXLW0Hta4rc@gull.rmq.cloudamqp.com/wfkwwege'],
                     queue: 'mspayments.queue',  // Solo cola directa
                     queueOptions: {
                         durable: true,
