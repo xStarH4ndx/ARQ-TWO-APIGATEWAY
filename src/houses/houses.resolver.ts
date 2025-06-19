@@ -12,7 +12,7 @@ import { IsUserInHouseResponse } from './models/is-user-in-house.model';
 import { HouseExistsResponse } from './models/house-exists.model';
 import { SearchHousesByNameInput } from './dto/search-houses-by-name.input';
 import { Logger } from '@nestjs/common';
-
+//Falta Auth
 @Resolver(() => House)
 export class HousesResolver {
   private readonly logger = new Logger(HousesResolver.name);
