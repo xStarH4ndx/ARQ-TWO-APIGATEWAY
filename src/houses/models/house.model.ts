@@ -6,13 +6,13 @@ export class House {
   id: string;
 
   @Field()
-  nombre: string;
+  name: string;
 
   @Field()
-  descripcion: string;
+  description: string;
 
   @Field()
-  codigo: string;
+  code: string;
 
   @Field(() => [String])
   userIds: string[];

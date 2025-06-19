@@ -1,17 +1,20 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()
 export class CreateHouseInput {
   @Field()
+  @IsString()
   @IsNotEmpty()
   nombre: string;
 
   @Field()
+  @IsString()
   @IsNotEmpty()
   descripcion: string;
 
   @Field()
+  @IsString()
   @IsNotEmpty()
   codigo: string;
 
