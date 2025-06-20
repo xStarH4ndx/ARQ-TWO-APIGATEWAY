@@ -2,7 +2,16 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { User } from './user.model';
 
 @ObjectType()
-export class AuthResponse {
+export class LoginData {
+  @Field()
+  accessToken: string; 
+
+  @Field(() => User)
+  user: User;
+}
+
+@ObjectType()
+export class LoginResponse {
   @Field()
   success: boolean;
 
@@ -12,9 +21,6 @@ export class AuthResponse {
   @Field({ nullable: true })
   error?: string;
 
-  @Field(() => User, { nullable: true })
-  data?: User;
-
-  @Field({ nullable: true })
-  verificationToken?: string;
+  @Field(() => LoginData, { nullable: true })
+  data?: LoginData;
 }

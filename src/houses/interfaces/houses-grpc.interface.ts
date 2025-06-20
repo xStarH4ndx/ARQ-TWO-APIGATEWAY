@@ -1,4 +1,4 @@
-// ==================== INTERFACES PARA gRPC (basadas en .proto) ====================
+// ==================== INTERFACES PARA gRPC  ====================
 
 export interface HouseGrpc {
   id: string;

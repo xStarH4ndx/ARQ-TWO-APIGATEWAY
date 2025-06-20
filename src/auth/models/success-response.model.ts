@@ -5,6 +5,9 @@ export class SuccessResponse {
   @Field()
   success: boolean;
 
+  @Field()
+  message: string;
+
   @Field({ nullable: true })
-  message?: string;
+  error?: string;
 }

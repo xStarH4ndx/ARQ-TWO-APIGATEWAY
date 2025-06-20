@@ -59,8 +59,6 @@ export class HousesService implements OnModuleInit {
     this.housesService = this.client.getService<HousesGrpcServiceObservable>('HousesService');
   }
 
-  // ==================== MÉTODOS QUE DEVUELVEN OBJETOS SIMPLES PARA GRAPHQL ====================
-
 async createHouse(createHouseData: any): Promise<any> {
   try {
     this.logger.log(`Creating house: ${JSON.stringify(createHouseData)}`);
