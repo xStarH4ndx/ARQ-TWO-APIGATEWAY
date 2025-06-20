@@ -225,7 +225,6 @@ async register(@Args('input') input: RegisterInput): Promise<AuthResponse> {
     }
   }
 
-  // Helper method to transform gRPC User to GraphQL User
   private transformUserFromGrpc(grpcUser: any): User {
     return {
       id: grpcUser.id,
