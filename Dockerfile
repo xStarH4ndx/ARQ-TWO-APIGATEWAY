@@ -1,34 +1,39 @@
-# Usa una imagen base de Node.js adecuada (ej. LTS)
-# Considera usar node:20-alpine si esa es la versión que estás usando localmente.
-# node:22-alpine es la última LTS, pero si tu proyecto fue desarrollado con 20, mejor usar 20.
-FROM node:22-alpine
+# Etapa 1: Build
+FROM node:22-alpine AS builder
 
-# Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
 # Copiar package.json y package-lock.json para instalar dependencias
-# Esto optimiza el uso del caché de Docker
 COPY package*.json ./
 
-# Instalar TODAS las dependencias (incluyendo devDependencies como @nestjs/cli)
-# Para desarrollo, necesitas las herramientas de desarrollo dentro del contenedor.
+# Instala todas las dependencias (dev incluidas para build)
 RUN npm install
 
-# Copiar el resto del código fuente de tu proyecto.
-# En desarrollo, generalmente quieres todo el código fuente.
+# Copiar el código fuente completo
 COPY . .
 
-# Exponer el puerto que usa tu API Gateway
-# Por defecto, NestJS usa el puerto 3000. Confirma en tu main.ts si es diferente.
+# Construir la app (generará dist/)
+RUN npm run build
+
+# Etapa 2: Producción
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copiar solo package.json y package-lock.json para instalar solo prod deps
+COPY package*.json ./
+
+# Instalar solo dependencias de producción
+RUN npm install --production
+
+# Copiar el build generado desde la etapa builder
+COPY --from=builder /app/dist ./dist
+
+# Copiar otros archivos necesarios (ejemplo: .env o config)
+# COPY .env .env
+
+# Exponer el puerto (ajustar según tu app, por defecto 3000)
 EXPOSE 3000
 
-# Comando para ejecutar la aplicación NestJS en desarrollo.
-# El script 'start:dev' de tu package.json es perfecto para esto,
-# ya que incluye '--watch' para recargar automáticamente si hay cambios
-# (aunque esto no es tan relevante en Kubernetes si no usas volúmenes persistentes para el código).
-CMD ["npm", "run", "start:dev"]
-
-# Notas adicionales para desarrollo:
-# - No necesitas una etapa de 'build' separada porque estás incluyendo devDependencies y el código fuente completo.
-# - El .env se copia directamente si está en tu directorio raíz.
-# - imagePullPolicy en Kubernetes debería ser 'IfNotPresent' o 'Always' si construyes la imagen localmente.
+# Comando para ejecutar la app compilada
+CMD ["node", "dist/main.js"]

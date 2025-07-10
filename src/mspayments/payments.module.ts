@@ -1,26 +1,41 @@
 import { Module } from "@nestjs/common";
 import { ClientsModule, Transport } from "@nestjs/microservices";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+
 import { PaymentService } from "./payments.service";
 import { PaymentResolver } from "./payments.resolver";
 
-
 @Module({
-    imports: [
-        ClientsModule.register([
-            {
-                name: 'PAYMENTS_SERVICE',
-                transport: Transport.RMQ,
-                options: {
-                    urls: ['amqps://wfkwwege:UwGEdBBlBLq2Rex4f0xdN_Xhq-PuBq8s@gull.rmq.cloudamqp.com/wfkwwege'],
-                    queue: 'mspayments.queue',  // Solo cola directa
-                    queueOptions: {
-                        durable: true,
-                    },
-                },
+  imports: [
+    ConfigModule, // habilita ConfigService
+
+    ClientsModule.registerAsync([
+      {
+        name: 'PAYMENTS_SERVICE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (config: ConfigService) => {
+          const uri = config.get<string>('RABBITMQ_URI');
+          const queue = config.get<string>('RABBITMQ_PAYMENTS_QUEUE');
+
+          if (!uri) throw new Error('❌ RABBITMQ_URI no está definido');
+          if (!queue) throw new Error('❌ RABBITMQ_PAYMENTS_QUEUE no está definido');
+
+          return {
+            transport: Transport.RMQ,
+            options: {
+              urls: [uri],
+              queue,
+              queueOptions: {
+                durable: true,
+              },
             },
-        ]),
-    ],
-    providers: [PaymentService, PaymentResolver],
-    exports: [PaymentService],
+          };
+        },
+      },
+    ]),
+  ],
+  providers: [PaymentService, PaymentResolver],
+  exports: [PaymentService],
 })
 export class PaymentModule {}
